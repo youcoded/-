@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Coded | Ultimate Emulation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Exo+2:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --purple-glow: #b026ff;
+            --purple-deep: #2a003b;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --sidebar-width: 80px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--white);
+            font-family: 'Exo 2', sans-serif;
+            overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+        }
+
+        .background-fx {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--purple-deep);
+            top: -100px;
+            left: -100px;
+            animation-duration: 12s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--purple-glow);
+            bottom: -50px;
+            right: -50px;
+            opacity: 0.3;
+            animation-duration: 8s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: var(--sidebar-width);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.6rem;
+            cursor: pointer;
+            transition: 0.4s;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-item.active {
+            color: var(--white);
+            background: rgba(176, 38, 255, 0.2);
+            box-shadow: 0 0 15px var(--purple-glow);
+        }
+
+        .main-content {
+            margin-left: 140px;
+            padding: 50px;
+            width: calc(100% - 140px);
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .section { display: none; animation: fadeIn 0.8s ease-out forwards; }
+        .section.active { display: block; }
+
+        h1 {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 5rem;
+            background: linear-gradient(to bottom right, #fff, #d896ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a8a8a8;
+            margin-bottom: 40px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            border-left: 3px solid var(--purple-glow);
+            padding-left: 15px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 240px));
+            gap: 15px;
+        }
+
+        .card {
+            width: 240px;
+            height: 240px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(176, 38, 255, 0.3);
+        }
+
+        .btn {
+            margin-top: 15px;
+            padding: 10px 22px;
+            background: rgba(176, 38, 255, 0.1);
+            border: 1px solid var(--purple-glow);
+            border-radius: 6px;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            text-decoration: none;
+        }
+
+        .btn:hover { background: var(--purple-glow); color: #000; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-fx">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <nav class="sidebar">
+        <div class="nav-item active" onclick="showSection('home', this)"><i class="fas fa-home"></i></div>
+        <div class="nav-item" onclick="showSection('emulators', this)"><i class="fas fa-gamepad"></i></div>
+        <div class="nav-item" onclick="showSection('apks', this)"><i class="fab fa-android"></i></div>
+        <div class="nav-item" onclick="showSection('software', this)"><i class="fas fa-code"></i></div>
+    </nav>
+
+    <div class="main-content">
+
+        <section id="home" class="section active">
+            <h1>YOU CODED</h1>
+            <p class="subtitle">Simulation // Beyond Reality</p>
+        </section>
+
+        <section id="emulators" class="section">
+            <h1>CORE SYSTEMS</h1>
+            <p class="subtitle">Select Architecture</p>
+
+            <div class="grid-container">
+
+                <div class="card">
+                    <h3>Smart Gaga v2</h3>
+                    <p>Android Emulator</p>
+                    <a href="https://drive.usercontent.google.com/downloadid=12Gol1SO2D2Vm1vNYqL5RdVB33-9GAnmB&export=download" class="btn">Download</a>
+                </div>
+
+                <div class="card">
+                    <h3>MSI Lite v5</h3>
+                    <p>Gaming Emulator</p>
+                    <a href="https://drive.usercontent.google.com/download?id=1Z_c3k5xinrtBz7CYyJ_xvS2ObCdL_zzX&export=download" class="btn">Download</a>
+                </div>
+
+                <div class="card">
+                    <h3>e4vx GG</h3>
+                    <p>Custom Engine</p>
+                    <a href="#" class="btn">Download</a>
+                </div>
+
+                <div class="card">
+                    <h3>Instinct Player</h3>
+                    <p>High-Performance Runner</p>
+                    <a href="https://drive.usercontent.google.com/download?id=1zyh60AzC-sZb3UfVBze2Z81I6aQng244&export=download" class="btn">Download</a>
+                </div>
+
+                <div class="card">
+                    <h3>FuXionStack</h3>
+                    <p>Engine Stack</p>
+                    <a href="https://drive.usercontent.google.com/download?id=1ekvxzoldMelWjeiJzEqamlVb2Z8-9oTB&export=download" class="btn">Download</a>
+                </div>
+
+                <div class="card">
+                    <h3>BenStack</h3>
+                    <p>Optimized Runtime</p>
+                    <a href="https://drive.usercontent.google.com/download?id=1vFO6Yey8oF3ldJZpz1SM1Y8IkewqWEIb&export=download" class="btn">Download</a>
+                </div>
+
+                <div class="card">
+                    <h3>Potato 5</h3>
+                    <p>Pass = XADYO</p>
+                    <a href="https://drive.usercontent.google.com/download?id=1Lsb0-DMOWCdYIZ1BDVwV_7m32M9Fu-pe&export=download" class="btn">Download</a>
+                </div>
+
+                <div class="card">
+                    <h3>NotStack</h3>
+                    <p>Runtime Emulator</p>
+                    <a href="https://drive.usercontent.google.com/download?id=1pk40ELnxlt80WlkTqV7Q6uHcbgfYO-lk&export=download" class="btn">Download</a>
+                </div>
+
+                <div class="card">
+                    <h3>Free Player</h3>
+                    <p>Lightweight Player</p>
+                    <a href="https://drive.usercontent.google.com/download?id=1dNau4aBETrTEY1sgAXrcgTJ4aOi-5qtG&export=download" class="btn">Download</a>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="apks" class="section">
+            <h1>ANDROID INJECTORS</h1>
+            <p class="subtitle">(No APKs Added)</p>
+        </section>
+
+        <section id="software" class="section">
+            <h1>DESKTOP SOFTWARE</h1>
+            <p class="subtitle">(No Software Added)</p>
+        </section>
+
+    </div>
+
+<script>
+function showSection(id, el) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+</script>
+
+</body>
+</html>
